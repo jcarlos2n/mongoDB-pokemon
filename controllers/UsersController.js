@@ -102,19 +102,7 @@ UsersController.addPokemon = async (req, res) => {
             defensa: pokeUp.defensa,
             especial: pokeUp.especial 
     }
-    // await User.pokemons.push(newUpdate, { strict: true })
-    // await User.findOneAndUpdate({$set:{'pokemons':newUpdate}}, { new: true }).exec()
     
-   
-    // await User.findByIdAndUpdate(id, {$push:{'pokemons':{
-    //         img: pokeUp.img,
-    //         name: pokeUp.name,
-    //         exp: pokeUp.exp,
-    //         hp: pokeUp.hp,
-    //         ataque: pokeUp.ataque,
-    //         defensa: pokeUp.defensa,
-    //         especial: pokeUp.especial 
-    // }}}, {new: true, safe: true, upsert: true })
     await User.findByIdAndUpdate(id, {$push:{'pokemons':newPoke}}, {new: true, safe: true, upsert: true })
         .then(result => {
             console.log(result)
