@@ -16,10 +16,12 @@ UsersController.getUsers = (req, res) => {
 };
 
 UsersController.postUser = async (req, res) => {
+    
     let nick = req.body.nick;
     let password = bcrypt.hashSync(req.body.password, Number.parseInt(3));
 
     if (nick === "" || password === "") {
+
         res.send("Rellena los campos que faltan");
     } else {
 
@@ -27,8 +29,10 @@ UsersController.postUser = async (req, res) => {
             nick: nick,
             password: password
         }).then(user => {
+            
             res.send(`${user.nick}, you have been added succesfully`);
         }).catch(err => {
+            
             res.send(err);
         })
     }
@@ -116,11 +120,11 @@ UsersController.deleteUser = async (req, res) => {
     const { id } = req.params;
 
     const dele = await User.findByIdAndDelete(id)
-    // .then(result => {
-    //     res.json(result)
-    // }).catch(err => {
-    //     console.error(err)
-    // })
+    .then(result => {
+        res.json('User has been deleted succesfully')
+    }).catch(err => {
+        console.error(err)
+    })
     if (dele === null) return res.sendStatus(404)
 
     res.status(204).end()
