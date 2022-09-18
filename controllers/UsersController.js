@@ -15,6 +15,15 @@ UsersController.getUsers = (req, res) => {
     })
 };
 
+UsersController.getUser = (req, res) => {
+    const { id } = req.params;
+
+    User.findById( id ).then(result => {
+        res.json(result);
+        mongoose.connection.close();
+    })
+};
+
 UsersController.postUser = async (req, res) => {
     
     let nick = req.body.nick;
