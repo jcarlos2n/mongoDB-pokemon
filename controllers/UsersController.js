@@ -15,13 +15,16 @@ UsersController.getUsers = (req, res) => {
     })
 };
 
-UsersController.getUser = (req, res) => {
+UsersController.getData = async (req, res) => {
     const { id } = req.params;
 
-    User.findById( id ).then(result => {
+    let user = await User.findOne({ _id: id })
+    .then(result => {
         res.json(result);
-        mongoose.connection.close();
+    }).catch(err => {   
+        res.send(err);
     })
+   
 };
 
 UsersController.postUser = async (req, res) => {
