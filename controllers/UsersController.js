@@ -96,7 +96,7 @@ UsersController.updateUser = async (req, res) => {
         nick: userUp.nick,
     }
 
-    await User.updateOne(id, newUpdate, { new: true })
+    let user = await User.findByIdAndUpdate(id, newUpdate, {new: true, safe: true, upsert: true })
         .then(result => {
             res.json(result)
         }).catch(err => {
@@ -120,7 +120,6 @@ UsersController.addPokemon = async (req, res) => {
     
     await User.findByIdAndUpdate(id, {$push:{'pokemons':newPoke}}, {new: true, safe: true, upsert: true })
         .then(result => {
-            console.log(result)
             res.json(result)
         }).catch(err => {
             console.error(err)
