@@ -54,7 +54,6 @@ UsersController.loginUser = async (req, res) => {
 
     let doc = req.body.nick;
     let clave = req.body.password;
-    // console.log(doc, clave);
 
     let user = await User.findOne({ nick: doc });
 
@@ -63,8 +62,8 @@ UsersController.loginUser = async (req, res) => {
     }).then(userFind => {
 
         if (!userFind) {
-
             res.send('Incorrect user or password');
+
         } else {
 
             if (bcrypt.compare(clave, userFind.password)) {
@@ -141,6 +140,5 @@ UsersController.deleteUser = async (req, res) => {
 
     res.status(204).end()
 }
-
 
 module.exports = UsersController;
