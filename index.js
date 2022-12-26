@@ -13,7 +13,7 @@ app.listen(PORT, () => {
     console.log('server running on port', PORT)
 })
 
-const connectionString = `mongodb+srv://jcarlos2n:conecta.1@cluster0.je69z9j.mongodb.net/pruebaMongo?retryWrites=true&w=majority`;
+const connectionString = `mongodb+srv://jcarlos2n:LBVAv8X0G4IPsVR7@cluster0.td2tswa.mongodb.net/RickAndMorty?retryWrites=true&w=majority`;
 
 mongoose.connect(connectionString)
     .then(() => {

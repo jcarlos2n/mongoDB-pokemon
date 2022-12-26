@@ -19,16 +19,16 @@ UsersController.getData = async (req, res) => {
     const { id } = req.params;
 
     let user = await User.findOne({ _id: id })
-    .then(result => {
-        res.json(result);
-    }).catch(err => {   
-        res.send(err);
-    })
-   
+        .then(result => {
+            res.json(result);
+        }).catch(err => {
+            res.send(err);
+        })
+
 };
 
 UsersController.postUser = async (req, res) => {
-    
+
     let nick = req.body.nick;
     let password = bcrypt.hashSync(req.body.password, Number.parseInt(3));
 
@@ -41,10 +41,10 @@ UsersController.postUser = async (req, res) => {
             nick: nick,
             password: password
         }).then(user => {
-            
+
             res.send(`${user.nick}, you have been added succesfully`);
         }).catch(err => {
-            
+
             res.send(err);
         })
     }
@@ -96,7 +96,7 @@ UsersController.updateUser = async (req, res) => {
         nick: userUp.nick,
     }
 
-    let user = await User.findByIdAndUpdate(id, newUpdate, {new: true, safe: true, upsert: true })
+    let user = await User.findByIdAndUpdate(id, newUpdate, { new: true, safe: true, upsert: true })
         .then(result => {
             res.json(result)
         }).catch(err => {
@@ -105,36 +105,42 @@ UsersController.updateUser = async (req, res) => {
 };
 
 UsersController.addPokemon = async (req, res) => {
-    const { id } = req.params;
-    const pokeUp = req.body;
+    try {
+        const { id } = req.params;
+        const pokeUp = req.body;
 
-    const newPoke = {
+        const newPoke = {
             img: pokeUp.img,
             name: pokeUp.name,
             exp: pokeUp.exp,
             hp: pokeUp.hp,
             ataque: pokeUp.ataque,
             defensa: pokeUp.defensa,
-            especial: pokeUp.especial 
+            especial: pokeUp.especial
+        }
+
+        const updateUserwithNewPokemon = await User.findByIdAndUpdate(id, { $push: { 'pokemons': newPoke } }, { new: true, safe: true, upsert: true })
+        // .then(result => {
+        //     res.json(result)
+        // }).catch(err => {
+        //     console.error(err)
+        // })
+        return res.json({ success: true, data: updateUserwithNewPokemon })
+    } catch (error) {
+        return res.json({ success: false, error: "something error" })
     }
-    
-    await User.findByIdAndUpdate(id, {$push:{'pokemons':newPoke}}, {new: true, safe: true, upsert: true })
-        .then(result => {
-            res.json(result)
-        }).catch(err => {
-            console.error(err)
-        })
+
 }
 
 UsersController.deleteUser = async (req, res) => {
     const { id } = req.params;
 
     const dele = await User.findByIdAndDelete(id)
-    .then(result => {
-        res.json('User has been deleted succesfully')
-    }).catch(err => {
-        console.error(err)
-    })
+        .then(result => {
+            res.json('User has been deleted succesfully')
+        }).catch(err => {
+            console.error(err)
+        })
     if (dele === null) return res.sendStatus(404)
 
     res.status(204).end()
