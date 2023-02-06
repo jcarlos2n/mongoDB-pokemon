@@ -120,11 +120,7 @@ UsersController.addPokemon = async (req, res) => {
         }
 
         const updateUserwithNewPokemon = await User.findByIdAndUpdate(id, { $push: { 'pokemons': newPoke } }, { new: true, safe: true, upsert: true })
-        // .then(result => {
-        //     res.json(result)
-        // }).catch(err => {
-        //     console.error(err)
-        // })
+    
         return res.json({ success: true, data: updateUserwithNewPokemon })
     } catch (error) {
         return res.json({ success: false, error: "something error" })
